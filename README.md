@@ -27,7 +27,7 @@
 
 **Установка и запуск**:
 1. Откройте терминал и выполните команду:\
-git clone https://github.com/Keka17/MoscowZoo_bot.git\
+git clone https://github.com/Keka17/MoscowZoo_bot.git<br>
 cd MoscowZoo_bot
 2. Создание виртуального окружения:\
 python -m venv venv\
@@ -35,8 +35,8 @@ source venv/bin/activate   # Для Linux и macOS\
 venv\Scripts\activate   # Для Windows
 3. Установите зависимости:
 pip install -r requirements.txt
-4. Создайте файл конфигурации:\
-В корневой папке создайте файл config.py и добавьте в него ваш токен бота (можно получить через @BotFather):TOKEN = "ВАШ_ТОКЕН_БОТА"
+4. Добавление токена в файл конфигурации:\
+В корневой папке в файле config.py добавьте токен бота (можно получить через @BotFather)
 5. Запуск бота: python main.py
 
 
