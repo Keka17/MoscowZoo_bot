@@ -2,25 +2,26 @@ from aiogram import Router, Bot
 from aiogram import types
 from aiogram.types import Message
 from aiogram.filters import Command
-from aiogram.fsm.context import FSMContext   # для отслеживания вопроса, на который отвечает пользователь
+from aiogram.fsm.context import (
+    FSMContext,
+)  # Для отслеживания вопроса, на который отвечает пользователь
 from aiogram.fsm.state import State, StatesGroup
 
-from config import TOKEN
 from questions import questions
 
 import animals_info
 from animals_info import animal_info
 from animals_info import animal_images
 
-bot = Bot(token=TOKEN)
 router = Router()
 
-# глобальные переменные
+# Глобальные переменные
 animals = animals_info.animals
 current_question_index = 0
 
-# обработчики команд
-@router.message(Command('start', 'help'))
+
+# Обработчики команд
+@router.message(Command("start", "help"))
 async def start(msg: Message):
     text = """ Тотемный компас: твой путь к <b>“Клубу друзей”</b>!
 Как это работает?\n
@@ -37,11 +38,11 @@ async def start(msg: Message):
 
 Начать викторину ➡️ /quiz
     """
-    await bot.send_message(msg.chat.id, text, parse_mode='HTML')
+    await msg.answer(text, parse_mode="HTML")
 
 
-@router.message(Command('info'))
-async def info(msg: Message):
+@router.message(Command("info"))
+async def info(msg: Message, bot: Bot):
     text = """
 Основная задача Московского зоопарка с самого начала его существования — сохранение биоразнообразия планеты. 
 Когда вы берете под опеку животное, вы помогаете нам в этом благородном деле. 
@@ -54,75 +55,94 @@ async def info(msg: Message):
 или позвонить по номеру [+7 (962) 971-38-75](tel:+79629713875)\n
 Узнать больше: https://moscowzoo.ru/about/guardianship
     """
-    await bot.send_message(msg.chat.id, text=text, parse_mode='Markdown')
+    await bot.send_message(msg.chat.id, text=text, parse_mode="Markdown")
 
 
-@router.message(Command('share'))
-async def share_result(msg: Message, state: FSMContext):
+@router.message(Command("share"))
+async def share_result(msg: Message, state: FSMContext, bot: Bot):
     data = await state.get_data()
-    if 'animals' in data:
-        result = max(data['animals'], key=data['animals'].get)
+    if "animals" in data:
+        result = max(data["animals"], key=data["animals"].get)
         image_url = animal_images.get(result)
-        await bot.send_photo(msg.chat.id, image_url, caption='Поделись изображением в социальных сетях - '
-                                                              'помоги большему количеству людей узнать о "Клубе друзей" 😉')
+        await bot.send_photo(
+            msg.chat.id,
+            image_url,
+            caption="Поделись изображением в социальных сетях - "
+            'помоги большему количеству людей узнать о "Клубе друзей" 😉',
+        )
 
-# самый простой способ обратной связи - гугл формы
-@router.message(Command('feedback'))
-async def get_feedback(msg: Message):
-    form_url = 'https://forms.gle/PWUfpSAYvnpTmPYYA'
-    text = f'Чтобы оставить отзыв, перейдите по ссылке:\n{form_url}'
+
+# Самый простой способ обратной связи - гугл формы
+@router.message(Command("feedback"))
+async def get_feedback(msg: Message, bot: Bot):
+    form_url = "https://forms.gle/PWUfpSAYvnpTmPYYA"
+    text = f"Чтобы оставить отзыв, перейдите по ссылке:\n{form_url}"
     await bot.send_message(msg.chat.id, text)
 
 
-@router.message(Command('restart'))
-async def restart(msg: Message, state: FSMContext):
+@router.message(Command("restart"))
+async def restart(msg: Message, state: FSMContext, bot: Bot):
     await state.clear()
-    await quiz(msg, state)
+    await quiz(msg, state, bot)
 
 
 class QuizState(StatesGroup):
     waiting_for_answer = State()
 
-# логика викторины
-@router.message(Command('quiz'))
-async def quiz(msg: Message, state: FSMContext):
-    await state.update_data(current_question_index=0,
-                            animals={animal: 0 for animal in animals.keys()})
-    await send_question(msg.chat.id, state)
+
+# Логика викторины
+@router.message(Command("quiz"))
+async def quiz(msg: Message, state: FSMContext, bot: Bot):
+    await state.update_data(
+        current_question_index=0, animals={animal: 0 for animal in animals.keys()}
+    )
+    await send_question(msg.chat.id, state, bot)
 
 
-async def send_question(chat_id: int, state: FSMContext):
-    data = await state.get_data()  # словарь, содержащий все сохраненные данные состояния для конкретного пользователя
-    current_question_index = data['current_question_index']
+async def send_question(chat_id: int, state: FSMContext, bot: Bot):
+    data = (
+        await state.get_data()
+    )  # Словарь, содержащий все сохраненные данные состояния для конкретного пользователя
+    current_question_index = data["current_question_index"]
     if current_question_index < len(questions):
         question = questions[current_question_index]
-        keyboard_buttons = [[types.KeyboardButton(text=option)] for option in question['options']]
-        markup = types.ReplyKeyboardMarkup(keyboard=keyboard_buttons, resize_keyboard=True, one_time_keyboard=True)
-        await bot.send_message(chat_id, question['question'], reply_markup=markup)
+        keyboard_buttons = [
+            [types.KeyboardButton(text=option)] for option in question["options"]
+        ]
+        markup = types.ReplyKeyboardMarkup(
+            keyboard=keyboard_buttons, resize_keyboard=True, one_time_keyboard=True
+        )
+        await bot.send_message(chat_id, question["question"], reply_markup=markup)
         await state.set_state(QuizState.waiting_for_answer)
     else:
-        await show_result(chat_id, state)
+        await show_result(chat_id, state, bot)
 
 
 @router.message(QuizState.waiting_for_answer)
-async def handle_answer(msg: Message, state: FSMContext):
+async def handle_answer(msg: Message, state: FSMContext, bot: Bot):
     data = await state.get_data()
-    current_question_index = data['current_question_index']
+    current_question_index = data["current_question_index"]
     selected_option = msg.text
     question = questions[current_question_index]
-    for animal in question['animal_mapping'][selected_option]:
-        data['animals'][animal] += 1
-    await state.update_data(current_question_index=current_question_index + 1, animals=data['animals'])
-    await send_question(msg.chat.id, state)
+    for animal in question["animal_mapping"][selected_option]:
+        data["animals"][animal] += 1
+    await state.update_data(
+        current_question_index=current_question_index + 1, animals=data["animals"]
+    )
+    await send_question(msg.chat.id, state, bot)
 
 
-async def show_result(chat_id: int, state: FSMContext):
+async def show_result(chat_id: int, state: FSMContext, bot: Bot):
     data = await state.get_data()
-    result = max(data['animals'], key=data['animals'].get)
-    await bot.send_message(chat_id, f'Твое тотемное животное - <b>{result}</b>! 🎉', parse_mode='HTML')
-    await animal_info(chat_id, result)
-    text = ('Пройти викторину заново ➡️ /restart\n'
-            'Узнать информацию о "Клубе друзей" ➡️ /info\n'
-            'Поделиться результатом ➡️ /share\n'
-            'Обратная связь ➡️ /feedback')
+    result = max(data["animals"], key=data["animals"].get)
+    await bot.send_message(
+        chat_id, f"Твое тотемное животное - <b>{result}</b>! 🎉", parse_mode="HTML"
+    )
+    await animal_info(bot, chat_id, result)  # Передаем bot как аргумент
+    text = (
+        "Пройти викторину заново ➡️ /restart\n"
+        'Узнать информацию о "Клубе друзей" ➡️ /info\n'
+        "Поделиться результатом ➡️ /share\n"
+        "Обратная связь ➡️ /feedback"
+    )
     await bot.send_message(chat_id, text)
