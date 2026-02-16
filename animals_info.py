@@ -1,21 +1,17 @@
-from aiogram import Bot
-from config import TOKEN
-
-bot = Bot(token=TOKEN)
-
-# для надежности фотогрфии и картинки сохранены на яндекс диске, доступ свободный
+# Для фотографии и картинки сохранены на Яндекс Диске, доступ свободный
 animals = {
-        'Южноафриканский жираф': 0,
-        'Снежный барс': 0,
-        'Морж': 0,
-        'Двугорбый верблюд': 0,
-        'Мохноногий сыч': 0,
-        'Папуанский пингвин': 0}
+    "Южноафриканский жираф": 0,
+    "Снежный барс": 0,
+    "Морж": 0,
+    "Двугорбый верблюд": 0,
+    "Мохноногий сыч": 0,
+    "Папуанский пингвин": 0,
+}
 
 
-async def animal_info(chat_id, result):
-    if result == 'Южноафриканский жираф':
-        image_url = 'https://disk.yandex.ru/i/_wS-jJwdhDx53Q'
+async def animal_info(bot, chat_id, result):
+    if result == "Южноафриканский жираф":
+        image_url = "https://disk.yandex.ru/i/_wS-jJwdhDx53Q"
         await bot.send_photo(chat_id, image_url)
         text = """Интересные факты о жирафах:
         ⚈ Это единственные животные, не умеющие зевать.
@@ -24,8 +20,8 @@ async def animal_info(chat_id, result):
         """
         await bot.send_message(chat_id, text)
 
-    elif result == 'Снежный барс':
-        image_url = 'https://disk.yandex.ru/i/DyxgAcQp_dvJ0A'
+    elif result == "Снежный барс":
+        image_url = "https://disk.yandex.ru/i/DyxgAcQp_dvJ0A"
         await bot.send_photo(chat_id, image_url)
         text = """Интересные факты о снежных барсах:
         ⚈ Барсы (они же ирбисы) – чемпионы по прыжкам в длину среди кошачьих. В погоне за добычей он может прыгнуть на расстояние до 6 метров.
@@ -34,8 +30,8 @@ async def animal_info(chat_id, result):
                 """
         await bot.send_message(chat_id, text)
 
-    elif result == 'Морж':
-        image_url = 'https://disk.yandex.ru/i/08f2IzgfFh5oyQ'
+    elif result == "Морж":
+        image_url = "https://disk.yandex.ru/i/08f2IzgfFh5oyQ"
         await bot.send_photo(chat_id, image_url)
         text = """Интересные факты о моржах:
         ⚈ Взрослый морж может весить до 2 тонн, но такой массы обычно достигают лишь самцы. Самки уступают им размерами.
@@ -44,8 +40,8 @@ async def animal_info(chat_id, result):
                 """
         await bot.send_message(chat_id, text)
 
-    elif result == 'Двугорбый верблюд':
-        image_url = 'https://disk.yandex.ru/d/h60FtFSRZCRdmA'
+    elif result == "Двугорбый верблюд":
+        image_url = "https://disk.yandex.ru/d/h60FtFSRZCRdmA"
         await bot.send_photo(chat_id, image_url)
         text = """Интересные факты о двугорбых верблюдах:
         ⚈ Верблюд может до недели обходиться без воды, что в условиях пустыни невозможно не одному животному. Зато когда верблюд получает доступ к воде, он может выпить до 100 литров за один раз.
@@ -54,8 +50,8 @@ async def animal_info(chat_id, result):
                         """
         await bot.send_message(chat_id, text)
 
-    elif result == 'Мохноногий сыч':
-        image_url = 'https://disk.yandex.ru/i/vybDSef8sEVPjg'
+    elif result == "Мохноногий сыч":
+        image_url = "https://disk.yandex.ru/i/vybDSef8sEVPjg"
         await bot.send_photo(chat_id, image_url)
         text = """Интересные факты о мохноногом сыче:
         ⚈ Во время нападения сыч  инстинктивно закрывает глаза, чтобы жертва при защите не смогла повредить хищнику глаза.
@@ -64,8 +60,8 @@ async def animal_info(chat_id, result):
                                 """
         await bot.send_message(chat_id, text)
 
-    elif result == 'Папуанский пингвин':
-        image_url = 'https://disk.yandex.ru/i/40LUvcl157oNOw'
+    elif result == "Папуанский пингвин":
+        image_url = "https://disk.yandex.ru/i/40LUvcl157oNOw"
         await bot.send_photo(chat_id, image_url)
         text = """Интересные факты о папуанских пингвинах:
         ⚈ Папуанские пингвины ведут совершенно уникальный для птиц образ жизни: они проводят в воде большую часть своей жизни, лишь изредка выбираясь на сушу.
@@ -76,11 +72,10 @@ async def animal_info(chat_id, result):
 
 
 animal_images = {
-        'Южноафриканский жираф': 'https://disk.yandex.ru/i/Y5PKUGa-3QY6fw',
-        'Снежный барс': 'https://disk.yandex.ru/i/FK1O2ORuY0z4kA',
-        'Морж': 'https://disk.yandex.ru/i/QdS-WzeWXN1XUQ',
-        'Двугорбый верблюд': 'https://disk.yandex.ru/i/ZZ6m4AUOJZ2sng',
-        'Мохноногий сыч': 'https://disk.yandex.ru/i/x2UFcoi6iRD5zg',
-        'Папуанский пингвин': 'https://disk.yandex.ru/i/uYKwL0Xt-RRTVA'}
-
-
+    "Южноафриканский жираф": "https://disk.yandex.ru/i/Y5PKUGa-3QY6fw",
+    "Снежный барс": "https://disk.yandex.ru/i/FK1O2ORuY0z4kA",
+    "Морж": "https://disk.yandex.ru/i/QdS-WzeWXN1XUQ",
+    "Двугорбый верблюд": "https://disk.yandex.ru/i/ZZ6m4AUOJZ2sng",
+    "Мохноногий сыч": "https://disk.yandex.ru/i/x2UFcoi6iRD5zg",
+    "Папуанский пингвин": "https://disk.yandex.ru/i/uYKwL0Xt-RRTVA",
+}
