@@ -43,9 +43,9 @@ venv\Scripts\activate   # Для Windows
 ```bash
 pip install -r requirements.txt
 ```
-4. Добавление токена в файл конфигурации:
+4. Настройка переменных окружения:
    
-  В корневой папке в файле __config.py__ добавьте токен бота (можно получить через __@BotFather__).
+  Создайте файл `.env`, добавив в него токен бота (`TOKEN=your_token`), который необходимо предварительно получить через __@BotFather__.
 
 5. Запуск бота:
    
@@ -53,6 +53,30 @@ pip install -r requirements.txt
    python main.py
    ```
 
+## Запуск через Docker
+
+1. Клонирование репозитория
+   
+   ```bash
+   git clone https://github.com/Keka17/MoscowZoo_bot.git
+   cd MoscowZoo_bot
+   ```
+2. Настройка переменных окружения
+   
+   Создайте файл `.env`, добавив в него токен бота (`TOKEN=your_token`), , который необходимо предварительно получить через __@BotFather__.
+
+3. Сборка контейнера
+   
+   ```bash
+   docker build -t totem-bot .
+   ```
+
+4. Запуск контейнера
+
+   ```bash
+   docker run -d --name totem-bot --restart unless-stopped --env-file .env totem-bot
+   ```
+   
 ## Демонстрация работы бота
 
 
