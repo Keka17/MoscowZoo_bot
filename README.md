@@ -17,35 +17,41 @@
 
 
 **Команды бота**:
-* _/start, /help_ - запуск бота и объяснение его работы
-* _/quiz_ - начать викторину по определению тотемного животного
-* _/restart_ - перезапуск викторины
-* _/info_ - получить информацию о "Клубе друзей" и Московском зоопарке
-* _/share_ - поделиться результатом викторины
-* _/feedback_ - оставить отзыв через Google Forms
+* `/start, /help` - запуск бота и объяснение его работы
+* `/quiz` - начать викторину по определению тотемного животного
+* `/restart` - перезапуск викторины
+* `/info` - получить информацию о "Клубе друзей" и Московском зоопарке
+* `/share` - поделиться результатом викторины
+* `/feedback` - оставить отзыв через Google Forms
 
 
 **Установка и запуск**:
 
 1. Откройте терминал и выполните команду:
 
-```bash
-git clone https://github.com/Keka17/MoscowZoo_bot.git
-cd MoscowZoo_bot
-```
+   ```bash
+   git clone https://github.com/Keka17/MoscowZoo_bot.git
+   
+   cd MoscowZoo_bot
+   ```
 2. Создание виртуального окружения:
-```bash
-python -m venv venv\
-source venv/bin/activate   # Для Linux и macOS\
-venv\Scripts\activate   # Для Windows
-```
+   
+   ```bash
+   
+   python -m venv venv\
+   
+   source venv/bin/activate   # Для Linux и macOS\
+   
+   venv\Scripts\activate   # Для Windows
+   ```
 3. Установите зависимости:
-```bash
-pip install -r requirements.txt
-```
+   
+   ```bash
+   pip install -r requirements.txt
+   ```
 4. Настройка переменных окружения:
    
-  Создайте файл `.env`, добавив в него токен бота (`TOKEN=your_token`), который необходимо предварительно получить через __@BotFather__.
+     Создайте файл `.env`, добавив в него токен бота (`TOKEN=your_token`), который необходимо предварительно получить через __@BotFather__.
 
 5. Запуск бота:
    
